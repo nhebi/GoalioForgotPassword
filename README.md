@@ -1,12 +1,18 @@
 GoalioForgotPassword
 ====================
 
-Version 0.0.2 Created by the goalio UG (haftungsbeschränkt)
+Version 1.0.0 Created by the goalio UG (haftungsbeschränkt)
 
 Introduction
 ------------
 
 A Zend Framework 2 (ZF2) Module offering forgot password via e-mail functionality to ZfcUser
+
+Information
+-----------
+I developed this module to use in our [goalio](http://www.goalio.de) application. There are currently no tests and support
+can be a little slow because we are a small company with only two developers. I appreciate any feedback, pull requests are even better.
+
 
 Requirements
 ------------
@@ -33,13 +39,11 @@ Installation
 
     ```json
     "require": {
-        "zf-commons/zfc-base": "dev-master",
-        "zf-commons/zfc-user": "dev-master",
-        "goalio/goalio-forgotpassword": "dev-master"
+        "goalio/goalio-forgotpassword": "1.*"
     }
     ```
 
-2. Now tell composer to download ZfcUser by running the command:
+2. Now tell composer to download GoalioForgotPassword by running the command:
 
     ```bash
     $ php composer.phar update
@@ -56,13 +60,14 @@ Installation
             // ...
             'ZfcBase',
             'ZfcUser',
+            'GoalioMailService',
             'GoalioForgotPassword'
         ),
         // ...
     );
     ```
 
-2. Then Import the SQL schema located in `./vendor/goalio/goalio-rememberme/data/schema.sql`.
+2. Then Import the SQL schema located in `./vendor/goalio/goalio-forgotpassword/data/schema.sql`.
 
 3. Make sure that the MailService is configured correctly.
 
@@ -99,7 +104,9 @@ Installation
 
 ### Post-Install: Doctrine2 ORM
 
-There will be a seperate module available to integrate with Doctrine soon.
+There is an additional module for Doctrine integration [GoalioForgotPasswordORM](https://github.com/goalio/GoalioForgotPasswordDoctrineORM)
+
+### Usage
 
 Navigate to http://yourproject/user and you should land on a login page.
 
@@ -116,14 +123,14 @@ The following options are available:
 - **password_entity_class** - Name of Entity class to use. Useful for using your own
   entity class instead of the default one provided. Default is
   `GoalioRememberMe\Entity\RememberMe`.
-- **reset_expire** - Integer value in seconds when the login cookie should expire. 
+- **reset_expire** - Integer value in seconds when the login cookie should expire.
   Default is `86400` (24 hours).
-- **email_transport** - String value which transport class to use. 
+- **email_transport** - String value which transport class to use.
   Default is `Zend\Mail\Transport\Sendmail`.
-- **reset_email_subject_line** - String value which transport class to use. 
+- **reset_email_subject_line** - String value which transport class to use.
   Default is `You requested to reset your password`.
-- **email_from_address** - Array  
-  Default is 
+- **email_from_address** - Array
+  Default is
 	`array(
     	'email' => 'your_email_address@here.com',
     	'name' => 'Your name',

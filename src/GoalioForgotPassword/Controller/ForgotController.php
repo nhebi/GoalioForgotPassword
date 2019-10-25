@@ -50,6 +50,11 @@ class ForgotController extends AbstractActionController
     protected $options;
 
     /**
+     * @var PasswordOptionsInterface
+     */
+    protected $zfcUserOptions;
+
+    /**
      * User page
      */
     public function indexAction()
@@ -76,7 +81,8 @@ class ForgotController extends AbstractActionController
             {
                 $userService = $this->getUserService();
 
-                $email = $this->getRequest()->getPost()->get('email');
+                //$email = $this->getRequest()->getPost()->get('email');
+                $email = $form->get('email')->getValue();
                 $user = $userService->getUserMapper()->findByEmail($email);
 
                 //only send request when email is found
@@ -103,6 +109,10 @@ class ForgotController extends AbstractActionController
 
     public function resetAction()
     {
+        if ($this->zfcUserAuthentication()->hasIdentity()) {
+            return $this->redirect()->toRoute('zfcuser');
+        }
+
         $service = $this->getPasswordService();
         $service->cleanExpiredForgotRequests();
 
@@ -112,10 +122,10 @@ class ForgotController extends AbstractActionController
         $userId    = $this->params()->fromRoute('userId', null);
         $token     = $this->params()->fromRoute('token', null);
 
-        $password = $service->getPasswordMapper()->findByUserIdRequestKey($userId, $token);
+        $passwordRequest = $service->getPasswordMapper()->findByUserIdRequestKey($userId, $token);
 
         //no request for a new password found
-        if($password === null || $password == false) {
+        if($passwordRequest === null || $passwordRequest == false) {
             return $this->redirect()->toRoute('zfcuser/forgotpassword');
         }
 
@@ -127,7 +137,7 @@ class ForgotController extends AbstractActionController
             $form->setData($this->getRequest()->getPost());
             if ( $form->isValid() && $user !== null )
             {
-                $service->resetPassword($password, $user, $form->getData());
+                $service->resetPassword($passwordRequest, $user, $form->getData());
 
                 $vm = new ViewModel(array('email' => $user->getEmail()));
                 $vm->setTemplate('goalio-forgot-password/forgot/passwordchanged');
@@ -225,5 +235,13 @@ class ForgotController extends AbstractActionController
             $this->setOptions($this->getServiceLocator()->get('goalioforgotpassword_module_options'));
         }
         return $this->options;
+    }
+
+    public function getZfcUserOptions()
+    {
+        if (!$this->zfcUserOptions instanceof PasswordOptionsInterface) {
+            $this->zfcUserOptions = $this->getServiceLocator()->get('zfcuser_module_options');
+        }
+        return $this->zfcUserOptions;
     }
 }

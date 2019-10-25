@@ -20,6 +20,11 @@ class ModuleOptions extends AbstractOptions implements
     /**
      * @var string
      */
+    protected $resetEmailTemplate = 'goalio-forgot-password/email/forgot';
+
+    /**
+     * @var string
+     */
     protected $emailTransport = 'Zend\Mail\Transport\Sendmail';
 
     /**
@@ -31,6 +36,11 @@ class ModuleOptions extends AbstractOptions implements
      * @var int
      */
     protected $resetExpire = 86400;
+    
+    /**
+     * @var bool
+     */
+    protected $validateExistingRecord = false;
 
 
     public function getEmailFromAddress() {
@@ -41,8 +51,16 @@ class ModuleOptions extends AbstractOptions implements
         return $this->resetEmailSubjectLine;
     }
 
+	public function getResetEmailTemplate() {
+        return $this->resetEmailTemplate;
+    }
+
 	public function getEmailTransport() {
         return $this->emailTransport;
+    }
+    
+    public function getValidateExistingRecord() {
+        return $this->validateExistingRecord;
     }
 
 	public function setEmailFromAddress($emailFromAddress) {
@@ -55,8 +73,18 @@ class ModuleOptions extends AbstractOptions implements
         return $this;
     }
 
+	public function setResetEmailTemplate($resetEmailTemplate) {
+        $this->resetEmailTemplate = $resetEmailTemplate;
+        return $this;
+    }
+
 	public function setEmailTransport($emailTransport) {
         $this->emailTransport = $emailTransport;
+        return $this;
+    }
+    
+    public function setValidateExistingRecord($validateExistingRecord) {
+        $this->validateExistingRecord = $validateExistingRecord;
         return $this;
     }
 

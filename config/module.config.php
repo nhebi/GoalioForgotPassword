@@ -13,6 +13,16 @@ return array(
             'goalioforgotpassword_forgot' => 'GoalioForgotPassword\Controller\ForgotController',
         ),
     ),
+
+    'translator' => array(
+        'translation_file_patterns' => array(
+            array(
+                'type'     => 'gettext',
+                'base_dir' => __DIR__ . '/../language',
+                'pattern'  => '%s.mo',
+            ),
+        ),
+    ),
     'router' => array(
         'routes' => array(
             'zfcuser' => array(
