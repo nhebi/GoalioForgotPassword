@@ -12,4 +12,6 @@ interface ForgotOptionsInterface
     public function getResetEmailSubjectLine();
     public function setResetEmailTemplate($template);
     public function getResetEmailTemplate();
+    public function setReplyTo($replyTo);
+    public function getReplyTo();
 }

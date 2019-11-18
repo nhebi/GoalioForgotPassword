@@ -41,6 +41,8 @@ class ModuleOptions extends AbstractOptions implements
      * @var bool
      */
     protected $validateExistingRecord = false;
+    
+    protected $replyTo = null;
 
 
     public function getEmailFromAddress() {
@@ -117,5 +119,23 @@ class ModuleOptions extends AbstractOptions implements
 
 	public function getResetExpire() {
         return $this->resetExpire;
+    }
+
+    /**
+     * @return null
+     */
+    public function getReplyTo()
+    {
+        return $this->replyTo;
+    }
+
+    /**
+     * @param null $replyTo
+     * @return ModuleOptions
+     */
+    public function setReplyTo($replyTo)
+    {
+        $this->replyTo = $replyTo;
+        return $this;
     }
 }
